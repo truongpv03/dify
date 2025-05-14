@@ -23,15 +23,13 @@ if (
 }
 else if (
   globalThis.document?.body?.getAttribute('data-api-prefix')
-  && globalThis.document?.body?.getAttribute('data-web-prefix')
   && globalThis.document?.body?.getAttribute('data-pubic-api-prefix')
-  && globalThis.document?.body?.getAttribute('data-pubic-web-prefix')
 ) {
   // Not build can not get env from process.env.NEXT_PUBLIC_ in browser https://nextjs.org/docs/basic-features/environment-variables#exposing-environment-variables-to-the-browser
   apiPrefix = globalThis.document.body.getAttribute('data-api-prefix') as string
-  webPrefix = globalThis.document.body.getAttribute('data-web-prefix') as string
+  webPrefix = (globalThis.document.body.getAttribute('data-web-prefix') as string || globalThis.location.origin)
   publicApiPrefix = globalThis.document.body.getAttribute('data-pubic-api-prefix') as string
-  publicWebPrefix = globalThis.document.body.getAttribute('data-pubic-web-prefix') as string
+  publicWebPrefix = (globalThis.document.body.getAttribute('data-pubic-web-prefix') as string || globalThis.location.origin)
 }
 else {
   // const domainParts = globalThis.location?.host?.split('.');
@@ -283,6 +281,8 @@ Thought: {{agent_scratchpad}}
 }
 
 export const VAR_REGEX = /\{\{(#[a-zA-Z0-9_-]{1,50}(\.[a-zA-Z_]\w{0,29}){1,10}#)\}\}/gi
+
+export const VAR_REGEX_TEXT = /\{\{#([a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)*)#\}\}/gi
 
 export const resetReg = () => VAR_REGEX.lastIndex = 0
 
